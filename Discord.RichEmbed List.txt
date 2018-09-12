@@ -1,0 +1,13 @@
+ban---- (Red) --
+botinfo--
+color--
+commands--
+help--
+kick---- (Orange) -
+lockdown---- (Brick Red) --
+mute---- (Amber) --
+stats--
+unban---- (Dark Blue) --
+unmute---- (Dark Blue) --
+userstats--
+warn---- (Atomic tangerine) --

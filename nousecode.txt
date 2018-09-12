@@ -1,0 +1,45 @@
+function encode(ch, prime) {
+        var x = parseInt(ch.charCodeAt(0));
+        return x + prime;
+    }
+    if (command === "omgencode") {
+        var prime = prime(args2.join(' '));
+        var input = args.shift();
+        var res = '';
+        for (var i = 0; i < args.join(' ').length; i++) {
+            res += encode(input[i], prime);
+            console.log(prime)
+        }
+        message.channel.send(res)
+    }
+     function decode(ch, prime) {
+      //  var x = parseInt(ch.charCodeAt(0));
+        return String.fromCharCode(ch - prime)
+        
+    }
+    if (command === "omgdecode") {
+        var prime = prime(args2.join(' '));
+        var input = args.shift();
+        var res = '';
+        for (var i = 0; i < input.length; i++) {
+            res += decode(input[i], prime);
+            console.log(prime)
+        }
+        message.channel.send(res)
+        console.log(res)
+    }
+
+
+
+    // client.on('presenceUpdate',(oMember, nMember) => {
+// //   console.log(oMember.presence.status)
+// var tagurit =nMember.presence.status.split("\n") 
+// let guild1 = member.guild;
+//   //console.log(nMember.presence.status)
+//   if (tagurit.indexOf("dnd")!=-1) {
+//   //let role = message.guild.roles.find("name", "DND/Do Not Disturb");
+//  // nMember.id.addRole("325486851634757634").catch(console.error);
+
+//   }
+//   console.log(tagurit)
+// });

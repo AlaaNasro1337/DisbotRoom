@@ -1,0 +1,47 @@
+{
+  "name": "mydiscordbot",
+  "version": "2.8.2",
+  "description": "discordBot",
+  "main": "index.js",
+  "dependencies": {
+    "@types/node": "^8.10.15",
+    "axios": "^0.16.2",
+    "base64-url": "^1.3.3",
+    "chalk": "^2.4.1",
+    "cheerio": "^1.0.0-rc.2",
+    "discord.js": "^11.3.2",
+    "discord.js-commando": "^0.9.0",
+    "enmap": "^2.6.3",
+    "enmap-sqlite": "^2.0.3",
+    "google": "^2.1.0",
+    "hoek": "^5.0.3",
+    "ipinfo": "^1.3.8",
+    "leo-profanity": "^1.2.4",
+    "moment": "^2.22.1",
+    "ms": "^2.1.1",
+    "node-localstorage": "^1.3.1",
+    "node-wolfram": "0.0.1",
+    "pastebin": "0.0.1",
+    "querystring": "^0.2.0",
+    "random-word": "^2.0.0",
+    "sequelize": "^4.38.0",
+    "snekfetch": "^4.0.0",
+    "sqlite3": "^4.0.1",
+    "superagent": "^3.8.3",
+    "url": "^0.11.0",
+    "werd": "^0.2.7",
+    "winston": "^2.4.2",
+    "xmldom": "^0.1.27",
+    "xpath": "0.0.27",
+    "youtube-node": "^1.3.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "PowerBot"
+  ],
+  "author": "AirFusion",
+  "license": "MIT"
+}

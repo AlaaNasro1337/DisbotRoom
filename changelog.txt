@@ -1,0 +1,218 @@
+Version 2.5.2 ChangeLog:
+    added changelog.txt & ChangeLog
+    added anagram func
+    changed keywords in package.json: CMSChatDiscordBot(old) PowerBot(new)
+    added commands, util, events folder on github
+    added help func with Discord.RichEmbed()
+    added color func that returns a ColorHex link
+    changed/fixed masspurge's permissions
+    changed setgame permissions
+    changed setstatus permissions
+    fixed startup command bold & text formatting issues
+    added commands func/cmd
+    ccencode moved from index.js to ccencode.js
+    ccdecode moved from index.js to ccdecode.js
+    cleaned up all the comments in index.js to index.jsbackup.txt
+    fixed bot token leak issues...
+    updated github repo
+
+Version 2.5.7 changelog:
+    changed kick command permissions
+    updated guildMemberRemove
+    added ban
+    added unban
+    added warn
+    added mute
+    added unmute
+    changed modlog Discord.RichEmbed formatting
+    added lockdown
+    added stats command
+    added userstats (mentioned user status)
+    added bot info & stats
+    WIP command alluserinfo; displays all user in guild's info, WIP: privacy issue, 2000 word discord text limit. POS Rightnow: console.log(<cmd>)
+    added morse command
+    added util.js
+    new npm: 'ms' used to convert timestamps to human readable time. For lockdown command
+    updated commands command
+
+Version 2.5.9 changelog:
+    updated morse command
+    updated commands command
+    updated ccencode command
+    updated ccdecode command
+    moved morse command to sepatate js file
+    added binary command
+    moved botinfo command to separate js file
+    moved userstats command to separate js file
+    moved stats command to separate js file
+    cleaned up util.js
+    updated/backuped index.js to index.jsbackup.txt
+
+Version 2.5.9.5
+    added/made a trello (https://trello.com/b/lyGy3ydI/powerbot-bugs)
+    updated ban command user feedback/bot reply message
+    updated unban command user feedback/bot reply message
+    updated commands command's prefix in RichEmbed
+    fixed where dndexit command tags the message author 2 times
+    fixed startup command print to channel
+    fixed spyon command print to channel
+    changed setstatus command permissions
+    edited morse command; so it actually prints
+    edited anagram if user inputs nothing, the bot will provide a reply prompt
+    changed up all the colors of commands that use Discord.RichEmbed
+    stopped multi tagging user when leaving the server
+
+Version 2.5.9.7 ----- !!!CRITICAL UPDATE DUE TO SOME DISCORD.JS CODE DEPRECATED
+    Updated discord.js to 11.1.0
+    updated chalk to 2.0.1
+    updated @types/node to 8.0.17
+    updated cheerio to 1.0.0-rc.2
+    updated all sendMessage, sendCode, sendEmbed to send //THIS WAS THE REASON FOR THE CRITICAL UPDATE
+    fixed eval after changing the sendCode to send
+    updated color command
+    updated the mute command help in commands
+    NOW EVERYTHING IS CONVERTED TO DISCORD.JS 11.1.0!
+    added Discord.RichEmbed List.txt
+
+Version 2.6.0
+    added emojimap -- shows all custom emojis on a server
+    added emojisearch -- shows the emoji of the user's input
+    added yt search
+    added .json file return on command alluserinfo
+    added .json file return on yt search
+    added pastebin intergration for eval
+    added a exec timer for eval
+    added a file output containing the results from eval for eval
+    added wolfram alpha intergration, .json file return & channel send results !!WIP
+    moved emojimap, emojisearch, alluserinfo, yt to func like .js files
+    added google search intergration
+    moved google cmd to func like .js files
+    added outer-reload command to reload modules outside of folders
+    fixed reload command for commands folder
+    fixed the version in config.json
+    added api keys to config.json
+    changed license in package.json
+    added LICENSE doc
+
+Version 2.6.5
+    updated command -^ where 2 digits as base would return 1
+    updated botinfo command; minor changes
+    added embed to let users embed custom msgs. //woo 100 lines of changelog :P LOL
+    added nth prime command
+    added numrand; random number generator
+    added rps command; rock paper scissors
+    added dm; a message system to dm people on the server
+    updated botinfo; minor text feedback changes
+    added clean; cleans reactions on bot's messages (message author needs to be the bot)
+    added killall; kill switch for the bot
+    added serverinv; generate a invite for the current server
+    cleaned up index.js
+    updated commands command
+    updated kick; minor feedback changes
+    updated ban; minor feedback changes
+
+Version 2.7.0
+    Fix killall command in commands command (that was a lot of commands :P)
+    Edited removerole command permissions
+    updated clean cmd name to emotclean to avoid confusion
+    fix cross sending in the embed in kick, ban, lockdown, mute, unmute & warn
+    Fixed/updated guildMemberRemove & guildMemberAdd for the deletable default channel update.
+    fixed killall cmd help in commands cmd missing  ">"
+    removed startup due to no use
+    little edits and beautifying in all commands
+    updated DM command
+    removed cc.js due to no use
+    added get mentioned user id in index.js
+    fixed reload command
+    !!! Added a more user friendly help to each non owner command !!! 
+    moved serverinfo to a separate js file
+
+Version 2.7.2
+    Added userid to find user's id (from last version, name changed) moved to separate js file
+    added random word cmd & moved to separate js file
+    added game presence update
+    added game command to find @user's playing game & more information
+    renamed stuff command to synant (synonyms & antonyms) & moved to separate js file
+    fixed API init/declaring in randword.js
+    fixed masspurge alawys showing help even with a value
+    added getip command (WIP)
+    added iplookup command (WIP)
+    added DND role placing to presence update
+    fixed ban cmd so that bans member first then sends log to modlog (Reported by Chroish via discord)
+    changed mod(kick, ban, warn, etc) cmd sto have better Discord.RichEmbed colors to suit the action
+    fixed all mod(kick, ban, warn, etc) cmds to do their action first before sending to modlog
+    fixed command cmd with latest cmds
+
+Version 2.7.5
+    Added message.delete to -say cmd
+    added GuildCreate action to log info
+    added GuildDelete action to log info
+    Added #of user count & # of bot count to serverinfo
+    added Voice channels to text channels ratio in serverinfo
+    added bot to user ratio/percentage in serverinfo
+    fixed getip command
+    added logger to every command
+    added triangle command to see if 3 numbers make a triangle
+    fixed all moderation commands so no crash when no modlog
+    added get log command
+    added spam command (HAHA lol)
+    fixed commmands command
+    FINAL RELEASE FOR A VERY LONG TIME!
+
+Version 2.7.6
+    Added -checklist command
+    fixed -warn command
+    fixed spam command to have loop limits, custom messages & custom loop times 
+    added -purge command
+    fixed -masspurge commmand
+    removed status roles, server object issue
+    fixed setgame & setstatus cmds
+    added reminders to -dm command
+
+Version 2.7.8
+    Fixed -rps commands with "rocks" "papers" - words w/ "s" input errs
+    Fixed -kick cmd (having two same vars declared) & improved the message dm ed to a user after kick.
+    fixed -masspurge so now it gives a responce when it fails to exec
+    fixed all moderation cmds
+    fixed -addrole & -removerole cmds to catch and stop exec when there is a err
+    fixed -wolfram cmd not having help embed 
+    added -msg cmd (Alies: -dm) for better user exp.
+    added -invite cmd to return bot's invite link
+    fixed -game cmd, added no input helper and fixed logger
+    fixed -triangle cmd, added no input helper 
+    removed config.jsons from each individual folder. Now running on only one config.json - infra change
+    added -prefix cmd, allows user to change bot's prefix
+    merged say & spam cmds
+
+Version 2.7.9
+    Merged config.version in bot info with the version in package.json. Linked for easier version control
+    fixed -botinfo cmd user count
+    made -prefix cmd bot owner only as it changes it globally for all instances of the bot that is hosted on the same machine.nces of the bot that is hosted on the same machine.
+    removed -synant as the api is broken, and there are no uses on the cmd
+    fixed -addrole grammar errors
+    added return for -emojimap if no custom emoji exsists on the execued server
+    fixed -google command
+    added -ownerhelp to show owner commands
+    added version flavors :)
+
+Version 2.8.0
+    Added a profanity filter to say
+    have two versions of the bot running, one for signiture edition guilds, and one for public use
+    added a party command :)
+    made spyon compatiable with modern discord servers
+    made serverinv compatiable with modern discord servers
+    cleaned up index.js
+    updated -dm helper
+    made emojisearch not ping the user
+    fixed invite cmd to send production link
+    updated -help to reflect github repo & tell server owners to run -checklist after adding powerbot & updated support server inv link & updated logger
+    moved -checklist to separate file
+    updated ready.js
+    updated config(example).json
+    updated ownerhelp
+
+Version 2.8.2
+    Added SQLite support 
+    added togglable welcome messages for each server
+    added a mentionable prefix
+    Fixed bot crashing when missing permissions

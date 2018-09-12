@@ -1,0 +1,1436 @@
+                                First Ver:
+const Discord = require('discord.js');
+const client = new Discord.Client();
+const fs = require('fs')
+const path = require('path')
+const config = require("./config.json");
+const chalk = require('chalk');
+const embed = new Discord.RichEmbed()
+require('./util/eventLoader')(client);
+
+
+//try on the rasbp*berry pie
+var reload = (message, cmd) => {
+    delete require.cache[require.resolve('./commands/' + cmd)];
+    try {
+        let cmdFile = require('./commands/' + cmd);
+    } catch (error) {
+        message.channel.sendMessage(`Problem loading ${cmd}: ${error}`).then(
+            response => response.delete(1000).catch(error => console.log(error.stack))
+        ).catch(error => console.log(error.stack));
+    }
+    message.channel.sendMessage(`${cmd} reload was a success!`).then(
+        response => response.delete(1000).catch(error => console.log(error.stack))
+    ).catch(error => console.log(error.stack));
+};
+exports.reload = reload;
+
+
+//TODO: https://youtu.be/Znvxk14Tg6A
+//TODO: https://youtu.be/8AiZBdcPKOM?t=29m10s
+//TODO: add purge
+//TODO: https://youtu.be/zdQplH3fwbU?t=16m1s
+//TODO: @ melmsie github, how did he do pls tts
+
+
+client.on("message", message => {  //message handler starts here!
+    if (message.author.bot) return;
+    if (!message.content.startsWith(config.prefix)) return;
+
+    let command = message.content.split(" ")[0];
+    command = command.slice(config.prefix.length);
+
+    let args = message.content.split(" ").slice(1);
+
+    let args2 = message.content.split(" ").slice(2);
+
+    let cmd = args.join(' ');
+
+    let cmd2 = args2.join(' ');
+    var res = cmd.slice(0, 1)
+    // client.user.setGame("Beta Testing");
+
+    // //  if (command === "masspurge") { //BUGS BELOW
+    // //      let messageCount = parseInt(args2.join(' '));
+    // //      message.channel.fetchMessages({limit: messageCount}).then(messages => message.channel.bulkDelete(messages));
+    // //  } else //BUGS ABOVE
+
+    // // if (command === "ping") {
+    // //     //message.channel.sendMessage(`Pinging...`)
+    // //     // message.channel.sendMessage(`Pong!`)
+    // //     message.channel.sendMessage(`Pong! :ping_pong: `)
+    // //     message.channel.sendMessage("`" + (client.ping).toFixed(0) + "ms" + "`")
+    // // }
+
+    // // if (command === "avatar") {
+    // //     message.channel.sendMessage("Here is your avatar: \n")
+    // //     message.channel.sendMessage(message.author.avatarURL);
+    // // }
+
+    // // if (command === "date") {
+    // //     message.channel.sendMessage("The date is: \n")
+    // //     message.channel.sendMessage(Date());
+    // // }
+
+    // // if (command === "pika") {
+    // //     message.channel.sendMessage("boo!")
+    // // }
+
+    // // if (command === "startup") {
+    // //     message.channel.sendMessage("__**Starting...**__")
+    // //     message.channel.sendMessage("__**Time Stamp: **__" + Date())
+    // //     message.channel.sendMessage("__**Bot Startup Successful!**__")
+    // //     message.channel.sendMessage("__**For More Information, Please Visit The Terminal On The Host Computer")
+    // // }
+
+    // // if (command === "afk") {
+    // //     message.reply(" is now AFK");
+
+
+    // //     let role = message.guild.roles.find("name", "AFK");
+
+    // //     // Let's pretend you mentioned the user you want to add a role to (!addrole @user Role Name):
+    // //     let member = message.guild.member(message.author);
+    // //     // mentions.users.first()
+
+    // //     // or the person who made the command: let member = message.member;
+
+    // //     // Add the role!
+    // //     member.addRole(role).catch(console.error);
+
+    // //     // Remove a role!
+
+
+    // // }
+
+    // // else if (command === "afkexit") {
+    // //     let role = message.guild.roles.find("name", "AFK");
+
+    // //     // Let's pretend you mentioned the user you want to add a role to (!addrole @user Role Name):
+    // //     let member = message.guild.member(message.author);
+    // //     message.reply(" is no longer AFK");
+    // //     member.removeRole(role).catch(console.error);
+
+    // // }
+    // // if (command === "setgame") {
+    // //     client.user.setGame(cmd);
+    // // }
+    // // if (command === "setstatus") {
+    // //     client.user.setStatus(cmd)
+    // // }
+    // // if (command === "dnd") {
+    // //     let role = message.guild.roles.find("name", "DND/Do Not Disturb");
+    // //     let member = message.guild.member(message.author);
+    // //     message.reply(` is in Do Not Disturb mode! Please do not disturb ${member}`);
+    // //     member.addRole(role).catch(console.error);
+    // // }
+
+    // // if (command === "dndexit") {
+    // //     let role = message.guild.roles.find("name", "DND/Do Not Disturb");
+    // //     let member = message.guild.member(message.author);
+    // //     message.reply(` ${member} has exited Do Not Disturb mode!`);
+    // //     member.removeRole(role).catch(console.error);
+    // // }
+
+    // // if (command === "addrole") {
+    // //     if (message.guild.member(message.author).hasPermission('MANAGE_ROLES_OR_PERMISSIONS')) { //roles.has is false for addroel & removerole
+    // //         let member = message.guild.member(message.mentions.users.first());
+    // //         let role = message.guild.roles.find("name", cmd2);
+    // //         // or the person who made the command: let member = message.member;
+    // //         message.channel.send(`Role ${role} has been added to ${member} `)
+    // //         // Add the role!
+    // //         member.addRole(role).catch(console.error);
+    // //     }
+    // //     // Remove a role!
+    // //     else {
+    // //         message.channel.send("You do not have perms");
+    // //     }
+    // // }
+
+    // // if (command === "removerole") {  //add if member does not have role
+    // //     if (message.guild.member(message.author).hasPermission('MANAGE_ROLES_OR_PERMISSIONS')) {
+    // //         let member = message.guild.member(message.mentions.users.first());
+    // //         let role = message.guild.roles.find("name", cmd2);
+    // //         member.removeRole(role).catch(console.error);
+    // //         message.channel.send(`Role ${role} has been removed from ${member} `)
+    // //     }
+    // //     //print args.join
+    // //     else {
+    // //         message.channel.send('You do not have perms');
+    // //     }
+
+    // // }
+    // // if (command === "say") {
+    // //     message.channel.send(cmd)
+    // // }
+
+    // // if (command === "add") {  //TODO add other funcs
+    // //     let numArray = args.map(n => parseInt(n));
+    // //     let total = numArray.reduce((p, c) => p + c);
+
+    // //     message.channel.sendMessage(total);
+
+
+    // // }
+
+    // // if (command === "subtract") {  //TODO add other funcs
+    // //     let numArray = args.map(n => parseInt(n));
+    // //     let total = numArray.reduce((p, c) => p - c);
+
+    // //     message.channel.sendMessage(total);
+
+
+    // // }
+    // // if (command === "multi") {  //TODO add other funcs
+    // //     let numArray = args.map(n => parseInt(n));
+    // //     let total = numArray.reduce((p, c) => p * c);
+
+    // //     message.channel.sendMessage(total);
+
+
+    // // }
+    // // if (command === "div") {  //TODO add other funcs
+    // //     let numArray = args.map(n => parseInt(n));
+    // //     let total = numArray.reduce((p, c) => p / c);
+
+    // //     message.channel.sendMessage(total);
+
+
+    // // }
+    // // if (command === "sqrt") {  //TODO add other funcs
+    // //     let inpuit = args;
+    // //     let answer = Math.sqrt(inpuit)
+    // //     message.channel.sendMessage(answer);
+
+
+    // // }
+
+    // // if (command === "^") {  //TODO add other funcs
+    // //     // var test = cmd;
+    // //     // var res = test.slice(0, 1)
+    // //     var answer = Math.pow(res, args2.join(' '));
+    // //     message.channel.sendMessage(answer);
+    // // }
+
+    // // if (command === "spyon") {  //bugs below
+
+    // //     if (message.author.id === config.owner) {
+    // //         let guild = client.guilds.find("name", cmd);
+    // //         // let guild = client.channels.get("81385020756865024");
+    // //         console.log(guild);
+    // //         try {
+    // //             //console.log(maxAge);
+    // //             guild.defaultChannel.createInvite({}).then(inv => message.channel.sendMessage(inv.url ? inv.url : "discord.gg/" + inv.code))
+
+    // //         } catch (error) {
+    // //             console.log(error)
+    // //             message.reply(' they don\'t allow me to generate invites :(')
+    // //         }
+    // //     } else {
+    // //         message.reply(" only AirFusion gets to spy on servers, sorry")
+    // //     }
+    // // }    //TODO <BUGS> in command spyon // consider @PD // */
+
+    // // if (command === "kick") {  //add Ban
+    // //     let reason = args.slice(1).join(' ');
+    // //     let user = message.mentions.users.first()
+    // //     let member = message.guild.member(user)
+    // //     if (!message.guild.member(message.author).hasPermission('KICK_MEMBERS')) return message.reply('You must be a moderator to kick people!').catch(console.error)
+    // //     if (message.mentions.users.size < 1) return message.reply('Please mention someone to kick!').catch(console.error)
+    // //     if (reason.length < 1) return message.reply('Please supply a reason for the kick!').catch(console.error)
+    // //     if (!message.guild.member(client.user).hasPermission('KICK_MEMBERS')) return message.reply('I do not have the correct permissions!').catch(console.error)
+    // //     if (message.guild.member(member) && member.kickable) {
+    // //         message.channel.send(`**__${member} was kicked from ${message.guild.name}.__**\n\n**Kicked by:** ` + message.author.username + "#" + message.author.discriminator + '\n\n**Reason:** *' + reason + '*' + '\n\n**Date:** *' + Date() + '*');
+    // //         client.channels.find("name", "modlog").sendMessage(`**__${member} was kicked from ${message.guild.name}.__**\n\n**Kicked by:** ` + message.author.username + "#" + message.author.discriminator + '\n\n**Reason:** *' + reason + '*' + '\n\n**Date:** *' + Date() + '*\n\n');
+    // //         //message.channel.send("\n\n")
+    // //         setTimeout(function () {
+    // //             message.guild.member(user).kick();
+    // //         }, 1000);
+
+
+
+    // //     }
+    // //     else {
+    // //         message.reply("This user doesn't exist in the server!")
+    // //     }
+    // // }
+
+    
+
+
+
+
+    
+
+        // else {
+        //     message.channel.sendMessage("Invalid Input");
+        // }
+
+        
+
+
+    // if (command === "help") {
+    //     message.channel.sendEmbed('```test')
+    //     message.channel.send('omg```')
+    // }
+
+    //     if (command === 'color') {
+    //       const embed = new Discord.RichEmbed() 
+    //       .setColor("#006b3c")    //#357cee
+    //       .setTitle("Color Hex")
+    //       .setDescription("Website for Color Codes!\n")
+    //       //.setURL("http://bit.ly/colorhexcolor")
+    //       .addField("Bit.ly Link:", `Please visit: http://bit.ly/colorhexcolor`)
+    //       .addField("Normal Link:", "If the link above does not work, then visit this link: http://www.colorhexa.com/color-names")
+    //    // message.channel.sendEmbed(embed)
+    //     message.channel.sendEmbed(embed, {
+    //         disableEveryone: true
+    //     })
+    //     }
+
+    // if (command === "anagram") {
+    //     var first = args.join(' ');
+    //     var second = args2.join(' ');
+    //     first = first.replace(second, "")
+    //     first = first.replace(" ", "")
+    //     var reverse = first.split("").reverse().join("");
+
+    //     if (reverse === second) {
+    //         message.channel.sendMessage("Anagram");
+    //     } else {
+    //         message.channel.sendMessage("Not Anagram");
+    //     }
+
+    // }
+
+
+//     if (command === "ccencode") {
+//     var string = args.join(' ') //problem with slice
+//     var shift = parseInt(args2.join(' '))
+//     var array = string
+//     //var array = temparray[0].split()
+//     var res = ""
+//     if (shift > 25) {
+//         shift = shift % 26;
+//     }
+//     for (var i = 0; i < string.length; i++) {
+//         // console.log(array[i])
+//         res += encode(array[i], shift)
+//         res.replace("undefined", " ");
+//         //message.channel.sendMessage("Your answer is " + res)
+//         // console.log(array[i])
+//     }
+//     for (; ;) {
+//         if (res.indexOf("undefined") != -1) {
+//             res = res.replace("undefined", " ");
+//         }
+//         else {
+//             break;
+//         }
+//     }
+//     message.channel.sendMessage("Your answer is " + res.replace("undefined", " "))
+// }
+
+// if (command === "ccdecode") {
+//     var string = args.join(' ') //problem with slice
+//     var shift = parseInt(args2.join(' '))
+//     var array = string
+//     //var array = temparray[0].split()
+//     var res = ""
+//     if (shift > 25) {
+//         shift = shift % 26;
+//     }
+//     for (var i = 0; i < string.length; i++) {
+//         // console.log(array[i])
+//         res += decode(array[i], shift)
+//         res.replace("undefined", " ");
+//         //message.channel.sendMessage("Your answer is " + res)
+//         // console.log(array[i])
+//     }
+
+//     for (; ;) {
+//         if (res.indexOf("undefined") != -1) {
+//             res = res.replace("undefined", " ");
+//         }
+//         else {
+//             break;
+//         }
+//     }
+//     message.channel.sendMessage("Your answer is " + res.replace("undefined", " "))
+// }
+
+
+if (command === "eval") {
+    if (message.author.id === config.owner) {
+        try {
+            var jvs = args.join(" ");
+            var done = eval(jvs);
+            if (typeof done !== "string")
+                done = require("util").inspect(done);
+            message.channel.sendCode("x1", clean(done));
+        } catch (e) {
+            message.channel.sendMessage(`\`ERROR\` \`\`\`x1\n${clean(e)}\n\`\`\``);
+        }
+    }
+    else {
+        message.channel.sendMessage("HEY! Stop trying to get into Fusion's computer!")
+    }
+}
+
+});  //message HANDLER ENDS HERE
+
+function clean(text) {
+    if (typeof (text) === "string")
+        return text.replace(/` /g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+    else
+        return text;
+
+}
+
+/* Bugs below
+client.on("presenceUpdate", (oldMember, newMember) => {
+      let guild = newMember.guild;
+      let playRole = guild.roles.find("name", "Playing Roblox");
+      if (!playRole) return;
+
+      if (newMember.user.presence.game && newMember.user.presence.name === "ROBLOX") {
+          newMember.addRole(playRole).catch(console.error);
+      } else if (!newMember.user.presence.game && newMember.roles.has(playRole.id)) {
+          newMember.removeRole(playRole).catch(console.error);
+      }
+  }); 
+  BUGS ABOVE */
+
+// client.on("guildMemberAdd", member => {
+//     let guild = member.guild;
+//     if (member.user.bot) {
+//         guild.defaultChannel.sendMessage(`A Wild Bot Has Appeared On The Server... \n The Bot's Name Is: ${member.user} OHHHHHHH... :/`)
+//     }
+//     else {
+//         guild.defaultChannel.sendMessage(`Welcome ${member.user} to CMS Chat!`)
+//     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+//OLD RELOAD BELOW!!!!
+
+
+// client.on("guildMemberRemove", member => {
+//     let guild = member.guild;
+//     if (member.user.bot) {
+//         guild.defaultChannel.sendMessage(`Goodbye to the Wild Bot ${member.user} :( `);
+
+//     }
+//     else {
+//         guild.defaultChannel.sendMessage(`Goodbye to user ${member.user} :(`);
+//     }
+// });
+
+
+
+var token = /[\w\d]{24}\.[\w\d]{6}\.[\w\d-_]{27}/g;
+client.on("debug", error => {
+    console.log(chalk.cyan(error.replace(token, "HIDDEN")));
+});
+client.on("warn", error => {
+    console.log(chalk.yellow(error.replace(token, "HIDDEN")));
+});
+client.on("error", error => {
+    console.log(chalk.red(error.replace(token, "HIDDEN")));
+});
+
+//https://youtu.be/qEDhVKFWoVg?t=18m21s
+
+
+client.login(config.token);
+
+
+
+
+
+
+
+                                    Second ver:
+
+
+const Discord = require('discord.js');
+const client = new Discord.Client();
+const fs = require('fs')
+const path = require('path')
+const config = require("./config.json");
+const chalk = require('chalk');
+const embed = new Discord.RichEmbed()
+const { binary } = require('./util.js')
+require('./util/eventLoader')(client);
+
+
+//TODO: https://youtu.be/Znvxk14Tg6A
+//TODO: https://youtu.be/8AiZBdcPKOM?t=29m10s
+//TODO: https://youtu.be/zdQplH3fwbU?t=16m1s
+//TODO: @ melmsie github, how did he do pls tts with speak of echos.
+////https://youtu.be/qEDhVKFWoVg?t=18m21s
+//https://youtu.be/1AjBVocSQhM?t=24m58s
+
+var reload = (message, cmd) => {
+    delete require.cache[require.resolve('./commands/' + cmd)];
+    try {
+        let cmdFile = require('./commands/' + cmd);
+    } catch (error) {
+        message.channel.sendMessage(`Problem loading ${cmd}: ${error}`).then(
+            response => response.delete(1000).catch(error => console.log(error.stack))
+        ).catch(error => console.log(error.stack));
+    }
+    message.channel.sendMessage(`${cmd} reload was a success!`).then(
+        response => response.delete(1000).catch(error => console.log(error.stack))
+    ).catch(error => console.log(error.stack));
+};
+exports.reload = reload;
+
+
+
+
+
+
+client.on("message", message => {  //message handler starts here!
+    if (message.author.bot) return;
+    if (!message.content.startsWith(config.prefix)) return;
+
+    let command = message.content.split(" ")[0];
+    command = command.slice(config.prefix.length);
+
+    let args = message.content.split(" ").slice(1);
+
+    let args2 = message.content.split(" ").slice(2);
+
+    let cmd = args.join(' ');
+
+    let cmd2 = args2.join(' ');
+    var res = cmd.slice(0, 1)
+
+    // !!!added super script
+    if (command === "alluserinfo") {  //wip
+        // if (message.author.id === config.owner) {
+        console.log(client.users)
+        //message.member.roles.map(d => d.name).join(', ') : 'None'
+        //     const embed = new Discord.RichEmbed()
+        //     .setColor('#7d5bbe')
+        //     .setTitle(client.user.username + " " + config.version + ` Stats`)
+        //     .setDescription(client.user.username + ' has been awake for ' + timeCon(process.uptime()))
+        //     .addField("client users", client.users)
+        //      message.channel.sendEmbed(embed, {
+        //     disableEveryone: true
+        // })
+        //console.log(client.users)
+        //}
+        // else {
+        //     message.channel.sendMessage("Insufficant Perms")
+        // }
+    }
+    
+    
+
+    if (command === "eval") {
+        if (message.author.id === config.owner) {
+            try {
+                var jvs = args.join(" ");
+                var done = eval(jvs);
+                if (typeof done !== "string")
+                    done = require("util").inspect(done);
+                message.channel.sendCode("x1", clean(done));
+            } catch (e) {
+                message.channel.sendMessage(`\`ERROR\` \`\`\`x1\n${clean(e)}\n\`\`\``);
+            }
+        }
+        else {
+            message.channel.sendMessage("HEY! Stop trying to get into Fusion's computer!")
+        }
+    }
+
+});  //message HANDLER ENDS HERE
+
+function clean(text) {
+    if (typeof (text) === "string")
+        return text.replace(/` /g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+    else
+        return text;
+
+}
+
+
+
+
+var token = /[\w\d]{24}\.[\w\d]{6}\.[\w\d-_]{27}/g;
+client.on("debug", error => {
+    console.log(chalk.cyan(error.replace(token, "HIDDEN")));
+});
+client.on("warn", error => {
+    console.log(chalk.yellow(error.replace(token, "HIDDEN")));
+});
+client.on("error", error => {
+    console.log(chalk.red(error.replace(token, "HIDDEN")));
+});
+
+
+
+client.login(config.token);
+
+
+                                                Third Ver:
+
+
+const Discord = require('discord.js');
+const client = new Discord.Client();
+const fs = require('fs')
+const path = require('path')
+const config = require("./config.json");
+const chalk = require('chalk');
+var YouTube = require('youtube-node');
+var google = require('google')
+var rand = getRandomIntInclusive(1, 100);
+var base64url = require('base64-url');
+var youTube = new YouTube();
+const youtubeKey = config.yt;
+youTube.setKey(youtubeKey)
+var LocalStorage = require('node-localstorage').LocalStorage;
+localStorage = new LocalStorage('./');
+const embed = new Discord.RichEmbed()
+var pastebin = require('./node_modules/pastebin/src/pastebin.js')(config.pastebin);
+const { binary } = require('./util.js')
+var wolfram = require('wolfram').createClient(config.wolfram)
+require('./util/eventLoader')(client);
+
+function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+}
+
+//TODO: https://youtu.be/Znvxk14Tg6A
+//TODO: https://youtu.be/8AiZBdcPKOM?t=29m10s
+//TODO: https://youtu.be/zdQplH3fwbU?t=16m1s
+//TODO: @ melmsie github, how did he do pls tts with speak of echos.
+////https://youtu.be/qEDhVKFWoVg?t=18m21s
+//https://youtu.be/1AjBVocSQhM?t=24m58s
+
+var reload = (message, cmd) => {
+    delete require.cache[require.resolve('./commands/' + cmd)];
+    try {
+        let cmdFile = require('./commands/' + cmd);
+    } catch (error) {
+        message.channel.send(`Problem loading ${cmd}: ${error}`).then(
+            response => response.delete(1000).catch(error => console.log(error.stack))
+        ).catch(error => console.log(error.stack));
+    }
+    message.channel.send(`${cmd} reload was a success!`).then(
+        response => response.delete(1000).catch(error => console.log(error.stack))
+    ).catch(error => console.log(error.stack));
+};
+exports.reload = reload;
+
+
+// client.on('presenceUpdate',(oMember, nMember) => {
+// //   console.log(oMember.presence.status)
+// var tagurit =nMember.presence.status.split("\n") 
+// let guild1 = member.guild;
+//   //console.log(nMember.presence.status)
+//   if (tagurit.indexOf("dnd")!=-1) {
+//   //let role = message.guild.roles.find("name", "DND/Do Not Disturb");
+//  // nMember.id.addRole("325486851634757634").catch(console.error);
+
+//   }
+//   console.log(tagurit)
+// });
+
+
+client.on("message", message => {  //message handler starts here!
+    if (message.author.bot) return;
+    if (!message.content.startsWith(config.prefix)) return;
+
+    let command = message.content.split(" ")[0];
+    command = command.slice(config.prefix.length);
+
+    let args = message.content.split(" ").slice(1);
+
+    let args2 = message.content.split(" ").slice(2);
+
+    let cmd = args.join(' ');
+
+    let cmd2 = args2.join(' ');
+    var res = cmd.slice(0, 1)
+
+    // function getNthPrime(n) {
+    //     l: for (var primes = [2], i = 3, root; primes.length < n; i += 2) {
+    //         for (root = Math.sqrt(i), j = 0; primes[j] <= root; j++) {
+    //             if (i % primes[j] === 0) continue l;
+    //         }
+    //         primes.push(i);
+    //     }
+    //     return primes[n - 1];
+    // }
+
+    // if (command === "prime") {
+    //     message.channel.send(getNthPrime(args.join(' ')))
+    // }
+
+    // if (command === "embed") {
+    //     const embed = new Discord.RichEmbed()
+    //         .setColor("#3f00ff")
+    //         .setAuthor(message.author.id)
+    //         .setDescription(args.join(' '))
+    //     message.channel.send({ embed: embed })
+    // }
+
+    if (command === "outer-reload") {
+        if (message.author.id === config.owner) {
+            if (!args || args.size < 1) return message.reply("Must provide a command name to reload.");
+            // the path is relative to the *current folder*, so just ./filename.js
+            delete require.cache[require.resolve(`./${args[0]}.js`)];
+            message.reply(`:white_check_mark: The command ${args[0]} has been reloaded`);
+        }
+        else {
+            message.reply(":x: Insufficant Permissions!")
+        }
+    }
+
+
+    if (command === "wolfram") { //WIP
+        wolfram.query(args.join(' '), function (err, result) {
+            if (err) throw err
+            localStorage.setItem('Wolfram-Results.json', result);
+            message.channel.send({ files: ['Wolfram-Results.json'] });
+            message.channel.send("**Solution: **" + result)
+            console.log(result)
+        })
+    }
+
+    // if (command === "tts") {
+    //     message.channel.send((args.join(' '), { tts: true }));
+    // }
+
+    function getRandomIntInclusive(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+    }
+    // if (command === "numrand") {
+    //     var low = args.shift();
+    //     var ans = getRandomIntInclusive(low, args2.join(' '));
+    //     message.channel.send(ans)
+    // }
+    // if (command === "rps") {
+    //     var computerchoose = getRandomIntInclusive(1, 3) //rock paper sissor
+    //     var computerfinal = '';
+    //     if (computerchoose === 1) {
+    //         computerfinal = "rock";
+    //     }
+    //     else if (computerchoose === 2) {
+    //         computerfinal = "paper";
+    //     }
+    //     else if (computerchoose === 3) {
+    //         computerfinal = "scissor";
+    //     }
+    //     if (args.join(' ') === 'rock' && computerfinal === "rock") {
+    //         message.channel.send("Tie! :>" + `You chose: ${args.join(' ')}. I chose: ${computerfinal}.`)
+    //     }
+    //     else if (args.join(' ') === 'rock' && computerfinal === "paper") {
+    //         message.channel.send("I win! :)" + `You chose: ${args.join(' ')}. I chose: ${computerfinal}.`)
+    //     }
+    //     else if (args.join(' ') === 'rock' && computerfinal === "scissor") {
+    //         message.channel.send("You win :(" + `You chose: ${args.join(' ')}. I chose: ${computerfinal}.`)
+    //     }
+    //     else if (args.join(' ') === 'paper' && computerfinal === "rock") {
+    //         message.channel.send("You win :(" + `You chose: ${args.join(' ')}. I chose: ${computerfinal}.`)
+    //     }
+    //     else if (args.join(' ') === 'paper' && computerfinal === "paper") {
+    //         message.channel.send("Tie! :>" + `You chose: ${args.join(' ')}. I chose: ${computerfinal}.`)
+    //     }
+    //     else if (args.join(' ') === 'paper' && computerfinal === "scissor") {
+    //         message.channel.send("I win! :)" + `You chose: ${args.join(' ')}. I chose: ${computerfinal}.`)
+    //     }
+    //     else if (args.join(' ') === 'scissor' && computerfinal === 'rock') {
+    //         message.channel.send("I win! :)" + `You chose: ${args.join(' ')}. I chose: ${computerfinal}.`)
+    //     }
+    //     else if (args.join(' ') === 'scissor' && computerfinal === 'paper') {
+    //         message.channel.send("You win :(" + `You chose: ${args.join(' ')}. I chose: ${computerfinal}.`)
+    //     }
+    //     else if (args.join(' ') === 'scissor' && computerfinal === 'scissor') {
+    //         message.channel.send("Tie! :>" + `You chose: ${args.join(' ')}. I chose: ${computerfinal}.`)
+    //     }
+    //     else {
+    //         message.channel.send("Failed to exec the command.")
+    //     }
+    // }
+
+    // if (command === "dm") {
+    //     let user = message.mentions.users.first()
+    //     user.send(`You have a message from user: ${message.author.username} | ID: ${message.author.id}\nMessage: ${args2.join(' ')}`)
+    // }
+
+    if (command === "membercount") { //WIP
+        message.channel.send(message.guild.memberCount);
+    }
+    if (command === 'serverinfo') {
+        const embed = new Discord.RichEmbed()
+            .setColor('#7d5bbe')
+            .setTitle(message.guild.name + ` Server Stats`)
+            .addField('📄 Channels', message.guild.channels.size, true)
+            .addField('🏠 Default Channel', message.guild.defaultChannel, true)
+            .addField(':man: Users', message.guild.memberCount, true) 
+            .addField(':date: Guild Created At', message.guild.createdAt, true)
+            .addField(":globe_with_meridians: Server Region", message.guild.region, true)
+            .addField(`:keyboard: AFK Channel ID `, message.guild.afkChannelID, true)
+            .addField(`:keyboard: AFK Channel Timeout`, message.guild.afkTimeout + " seconds", true)
+            .addField(`:frame_photo: Server Icon`, message.guild.iconURL, true)
+            .addField(`:id: Guild ID`, message.guild.id, true)
+            .addField(`:man_in_tuxedo: Server Owner`, message.guild.owner, true)
+            .addField(`:man_in_tuxedo: Server Owner ID`, message.guild.ownerID, true)
+            .addField(`:closed_lock_with_key: Server Verification Level`, message.guild.verificationLevel, true)
+            .addField(`:joystick: Roles Size`, message.guild.roles.size, true)
+
+
+        message.channel.send({ embed: embed })
+        // Enable this if you want server roles to be printed message.channel.send("Roles List:\n" + message.guild.roles.map(e => e.toString()).join(" "), { code: 'js' })
+        message.guild.defaultChannel.createInvite({ maxAge: 300 }).then(inv => message.channel.send(inv.url ? inv.url : "discord.gg/" + inv.code))
+    }
+
+    if (command === "killall") {
+        if (message.author.id === config.owner) {
+            var check = base64url.encode(rand.toString())
+            if (!args.join(' ')) {
+                message.channel.send('Please get a password! It has been Directly Messaged to you!')
+                message.author.send("Base 64 of " + rand)
+                message.author.send("Then remove any equal signs(=) from the result!")
+
+                //message.author.send("Tool: https://emn178.github.io/online-tools/base32_encode.html")
+            }
+            else if (args.join(' ') === check) {
+                message.channel.send("Success! PowerBot shutting down...")
+                setTimeout(function () {
+                    process.abort();
+                }, 3000);
+
+            }
+            else {
+                console.log(check)
+                message.channel.send("you said no")
+            }
+        } else {
+            message.channel.send("Insufficant Permissions")
+        }
+    }
+    // process.cpuusage
+    // if (command === "generateinv") {
+    //     message.guild.defaultChannel.createInvite({ maxAge: 300 }).then(inv => message.channel.send(inv.url ? inv.url : "discord.gg/" + inv.code))
+    // }
+    if (command === "eval") {
+        if (message.author.id === config.owner) {
+            var x = Date.now();
+            //var y = 0;
+            try {
+                var jvs = args.join(" ");
+                var done = eval(jvs);
+                if (typeof done !== "string")
+                    done = require("util").inspect(done);
+                message.channel.send(":white_check_mark: **Output:**\n" + "```" + `${clean(done)}` + "```");
+                localStorage.setItem('Eval-Results.json', clean(done));
+                message.channel.send({ files: ['Eval-Results.json'] });
+                pastebin.new({ title: 'Eval Results', content: clean(done) }, function (err, ret) {
+                    if (err)
+                        message.channel.send(err);
+                    else
+                        message.channel.send(ret);
+
+                });
+                var y = Date.now();
+                var noplz = y - x
+                message.channel.send("Time used: " + noplz + " ms");
+            }
+
+            catch (e) {
+                message.channel.send(":x: **Output:**\n" + `\`ERROR\` \`\`\`x1\n${clean(e)}\n\`\`\``);
+                localStorage.setItem('Eval-Results.json', clean(e));
+                message.channel.send({ files: ['Eval-Results.json'] });
+                pastebin.new({ title: 'Eval Results', content: clean(e) }, function (err, ret) {
+                    if (err)
+                        message.channel.send(err);
+                    else
+                        message.channel.send(ret);
+
+                });
+                var y = Date.now();
+                var noplz = y - x
+                message.channel.send("Time used: " + noplz + " ms");
+            }
+        }
+        else {
+            message.channel.send("HEY! Stop trying to get into Fusion's computer!")
+        }
+    }
+
+});  //message HANDLER ENDS HERE
+
+function clean(text) {
+    if (typeof (text) === "string")
+        return text.replace(/` /g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+    else
+        return text;
+
+}
+
+
+
+
+
+var token = /[\w\d]{24}\.[\w\d]{6}\.[\w\d-_]{27}/g;
+client.on("debug", error => {
+    console.log(chalk.cyan(error.replace(token, "HIDDEN")));
+});
+client.on("warn", error => {
+    console.log(chalk.yellow(error.replace(token, "HIDDEN")));
+});
+client.on("error", error => {
+    console.log(chalk.red(error.replace(token, "HIDDEN")));
+});
+
+
+client.login(config.token);
+
+                                                    Forth Ver:
+
+                                                    
+const Discord = require('discord.js');
+const client = new Discord.Client();
+const fs = require('fs')
+const path = require('path')
+const config = require("./config.json");
+const chalk = require('chalk');
+var YouTube = require('youtube-node');
+var google = require('google')
+var rand = getRandomIntInclusive(1, 100);
+var base64url = require('base64-url');
+const werd = require('werd')
+const randomWord = require('random-word');
+const ipInfo = require("ipinfo");
+const winston = require('winston')
+const filter = require('leo-profanity')
+filter.add(config.profanity)
+const os = require("os")
+var logger = new (winston.Logger)({
+    transports: [
+        new winston.transports.Console(),
+        new winston.transports.File({ filename: 'log.txt' })
+    ]
+})
+var youTube = new YouTube();
+const youtubeKey = config.yt;
+youTube.setKey(youtubeKey)
+var LocalStorage = require('node-localstorage').LocalStorage;
+localStorage = new LocalStorage('./');
+const embed = new Discord.RichEmbed()
+var pastebin = require('./node_modules/pastebin/src/pastebin.js')(config.pastebin);
+const { binary } = require('./util.js')
+// var wolfram = require('wolfram').createClient(config.wolfram)
+var Wolfram = require('node-wolfram')
+
+require('./util/eventLoader')(client);
+
+function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+}
+client.on('guildCreate', (guild) => {
+    console.log(chalk.white(`Joined guild ${guild.name} ID: ${guild.id}  Owner ID: ${guild.ownerID}`)) //Owner: ${guild.owner.user.tag}
+    if (config.createMuteRoleUponJoin) {
+        guild.createRole({
+            name: `Mute`,
+            color: 'BLACK',
+            position: 1,
+            hoist: false,
+            mentionable: false,
+            permissions: 0,
+
+        }).catch(e => console.error(e))
+    }
+})
+client.on('guildDelete', (guild) => {
+    console.log(chalk.white(`Left/Kicked from guild ${guild.name} ID: ${guild.id}  Owner ID: ${guild.ownerID}`))
+});
+
+var reload = (message, cmd) => {
+    delete require.cache[require.resolve('./commands/' + cmd)];
+    try {
+        let cmdFile = require('./commands/' + cmd);
+    } catch (error) {
+        message.channel.send(`Problem loading ${cmd}: ${error}`).then(
+            response => response.delete(1000).catch(error => console.log(error.stack))
+        ).catch(error => console.log(error.stack));
+    }
+    message.channel.send(`${cmd} reload was a success!`).then(
+        response => response.delete(1000).catch(error => console.log(error.stack))
+    ).catch(error => console.log(error.stack));
+};
+exports.reload = reload;
+
+client.on("message", message => {  //message handler starts here!
+    if (message.author.bot) return;
+    if (!message.content.startsWith(config.prefix)) return;
+    let command = message.content.split(" ")[0];
+    command = command.slice(config.prefix.length);
+    let args = message.content.split(" ").slice(1);
+    let args2 = message.content.split(" ").slice(2);
+    let cmd = args.join(' ');
+    let cmd2 = args2.join(' ');
+    var res = cmd.slice(0, 1)
+    var guild = message.guild;
+
+    if (command === "checklist") {
+        logger.log('info', `checklist command used by ${message.author.tag} ID: ${message.author.id} Time: ${Date.now()} Guild: ${guild}`)
+        const embed100 = new Discord.RichEmbed()
+            .setTitle("If a role is true, means you have the role setup correctly, if it is false, then there is something wrong witht the role.")
+            .setColor('#ff0000')
+            .setFooter(config.name + "CheckList")
+
+
+        let powerbotperm = client.guilds.get(message.guild.id).roles.find("name", "PowerBot")
+
+        embed100.addField("PowerBot ADMINISTRATOR Permissions: ", powerbotperm.hasPermission("ADMINISTRATOR"))
+
+        let muteRole = client.guilds.get(message.guild.id).roles.find("name", "Mute")
+        let mute = true;
+        if (!muteRole) mute = false;
+        embed100.addField("PowerBot Mute Role: ", mute)
+        message.channel.send({ embed: embed100 });
+
+    }
+
+    if (command === "prefix") {
+        if (message.author.id === config.owner) {
+            config.prefix = args.join(' ');
+            fs.writeFile('./config.json', JSON.stringify(config, null, 2), function (err) {
+                if (err) return console.error(err);
+                // console.log(JSON.stringify(config));
+                // console.log('writing to ' + './config.json');
+                message.channel.send(`Prefix Successfully Changed to ${config.prefix}.`)
+            });
+        } else {
+            message.reply("Only the bot owner can change the prefix.")
+        }
+
+    }
+
+    if (command === "wolfram") { //WIP
+        const embed = new Discord.RichEmbed()
+            .setColor("#f0ffff")
+            .setDescription("**Command: **" + `${config.prefix}wolfram`)
+            .addField("**Usage:**", `${config.prefix}wolfram <query>`)
+            .addField("**Example:**", `${config.prefix}wolfram 1+2`)
+            .addField("**Expected Result From Example:**", "Should return a lot of information about 1+2 - May be quite spammy...")
+        if (!args.join(" ")) return message.channel.send({ embed: embed })
+
+        wolfram = new Wolfram(config.wolfram)
+
+        wolfram.query(args.join(' '), function (error, result) {
+            if (error) {
+                console.log(error);
+                message.edit("Couldn't talk to Wolfram Alpha :(")
+            } else {
+                console.log(JSON.stringify(result));
+                var response = "";
+                if (result.queryresult.$.success == "true") {
+                    message.delete();
+                    if (result.queryresult.hasOwnProperty("warnings")) {
+                        for (var i in result.queryresult.warnings) {
+                            for (var j in result.queryresult.warnings[i]) {
+                                if (j != "$") {
+                                    try {
+                                        message.channel.send(result.queryresult.warnings[i][j][0].$.text);
+                                    } catch (e) {
+                                        console.log("WolframAlpha: failed displaying warning:\n" + e.stack());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (result.queryresult.hasOwnProperty("assumptions")) {
+                        for (var i in result.queryresult.assumptions) {
+                            for (var j in result.queryresult.assumptions[i]) {
+                                if (j == "assumption") {
+                                    try {
+                                        message.channel.send(`Assuming ${result.queryresult.assumptions[i][j][0].$.word} is ${result.queryresult.assumptions[i][j][0].value[0].$.desc}`);
+                                    } catch (e) {
+                                        console.log("WolframAlpha: failed displaying assumption:\n" + e.stack());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    for (var a = 0; a < result.queryresult.pod.length; a++) {
+                        var pod = result.queryresult.pod[a];
+                        response += "**" + pod.$.title + "**:\n";
+                        for (var b = 0; b < pod.subpod.length; b++) {
+                            var subpod = pod.subpod[b];
+                            //can also display the plain text, but the images are prettier
+                            /*for(var c=0; c<subpod.plaintext.length; c++)
+                            {
+                                response += '\t'+subpod.plaintext[c];
+                            }*/
+                            for (var d = 0; d < subpod.img.length; d++) {
+                                response += "\n" + subpod.img[d].$.src;
+                                message.channel.send(response);
+                                response = "";
+                            }
+                        }
+                        response += "\n";
+                    }
+                } else {
+                    if (result.queryresult.hasOwnProperty("didyoumeans")) {
+                        var msg = [];
+                        for (var i in result.queryresult.didyoumeans) {
+                            for (var j in result.queryresult.didyoumeans[i].didyoumean) {
+                                msg.push(result.queryresult.didyoumeans[i].didyoumean[j]._);
+                            }
+                        }
+                        message.edit("Did you mean: " + msg.join(" "));
+                    } else {
+                        message.edit("No results from Wolfram Alpha :(");
+                    }
+                }
+            }
+        });
+
+
+
+        logger.log('info', `Wolfram command used by ${message.author.tag} ID: ${message.author.id} Time: ${Date()} Guild: ${guild}`)
+
+    }
+
+    if (command === "test") {
+        message.channel.send("Nothing here to see :p")
+    }
+
+    if (command === "party") {
+        var congablob = client.emojis.find("name", "432480321850834945conga")
+        var hype = client.emojis.find("name", "432480321850834945hype")
+        var ditto = client.emojis.find("name", "420406277664145428ditto")
+        var parrot = client.emojis.find("name", "432480321846509569parrot")
+        var shield = client.emojis.find("name", "393609342215258112shield")
+
+        message.channel.send(shield + shield + shield + shield + shield + "\n" + congablob + congablob + congablob + congablob + congablob + "\n" + hype + ditto + hype + ditto + hype + "\n" + parrot + congablob + congablob + congablob + parrot + "\n" + shield + shield + shield + shield + shield)
+    }
+
+    function getRandomIntInclusive(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+    }
+
+    if (command === "setmuterole") {
+        if (message.author.id != config.owner) return message.reply("Invalid Permissions - Command is owner only.")
+        else {
+            // if (args.join(' ') != "true" || args.join(' ') != "false") return message.reply("Please enter \"true\" for yes, and \"false\" for no.")
+            if (args.join(' ') === "true") {
+                config.createMuteRoleUponJoin = true;
+                fs.writeFile('./config.json', JSON.stringify(config, null, 2), function (err) {
+                    if (err) return console.error(err);
+                    // console.log(JSON.stringify(config));
+                    // console.log('writing to ' + './config.json');
+                    message.channel.send(`createMuteRoleUponJoin Successfully Changed to ${config.createMuteRoleUponJoin}.`)
+                });
+            }
+            else if (args.join(' ') === "false") {
+                config.createMuteRoleUponJoin = false;
+                fs.writeFile('./config.json', JSON.stringify(config, null, 2), function (err) {
+                    if (err) return console.error(err);
+                    // console.log(JSON.stringify(config));
+                    // console.log('writing to ' + './config.json');
+                    message.channel.send(`createMuteRoleUponJoin Successfully Changed to ${config.createMuteRoleUponJoin}.`)
+                });
+            }
+        }
+    }
+
+    if (command === "ownerhelp") {
+        const ownercmds = new Discord.RichEmbed()
+            .setColor("#ffd700")
+            .setDescription("If you are not the owner, this list is just to make you jealous... Hehe - Owner superpowers :p")
+            .addField("Upload to Pastebin when eval", "cmd: setpastebineval")
+            .addField("Set if bot creates mute role when joining a server", "cmd: setmuterole")
+            .addField("upload result file when eval", "cmd: setuploadfileeval")
+            .addField("Set bot game", "cmd: setgame <args>")
+            .addField("Set bot status", "cmd: setstatus <args>")
+            .addField("Get all of the servers bot is in", "cmd: getallserver")
+            .addField("leaves the inputed server. Server name has to be exact.", "cmd: leaveserver <args>")
+            .addField("broadcast a message, including update messages", "cmd: broadcast <message/args>")
+            .addField("get log", "cmd: getlog")
+            .addField("Emergency STOP, incase things get out of control", "cmd: killall")
+            .addField("good old eval, evals code from discord chatbox", "cmd: eval <ya code m8 :p>")
+            .addField("change the bot's prefix... For trolling purposes only LOL", "cmd: prefix <new prefix which no one will know>")
+            .addField("spyon servers by gening invites","cmd:spyon <server name>")
+
+        message.channel.send({ embed: ownercmds })
+        logger.log('info', `ownerhelp command used by ${message.author.tag} ID: ${message.author.id} Time: ${Date()} Guild: ${guild}`)
+
+    }
+    if (command === "setpastebineval") {
+        if (message.author.id != config.owner) return message.reply("Invalid Permissions - Command is owner only.")
+        else {
+            // if (args.join(' ') != "true" || args.join(' ') != "false") return message.reply("Please enter \"true\" for yes, and \"false\" for no.")
+            if (args.join(' ') === "true") {
+                config.uploadtoPastebinEval = true;
+                fs.writeFile('./config.json', JSON.stringify(config, null, 2), function (err) {
+                    if (err) return console.error(err);
+                    // console.log(JSON.stringify(config));
+                    // console.log('writing to ' + './config.json');
+                    message.channel.send(`uploadtoPastebinEval Successfully Changed to ${config.createMuteRoleUponJoin}.`)
+                });
+            }
+            else if (args.join(' ') === "false") {
+                config.uploadtoPastebinEval = false;
+                fs.writeFile('./config.json', JSON.stringify(config, null, 2), function (err) {
+                    if (err) return console.error(err);
+                    // console.log(JSON.stringify(config));
+                    // console.log('writing to ' + './config.json');
+                    message.channel.send(`uploadtoPastebinEval Successfully Changed to ${config.createMuteRoleUponJoin}.`)
+                });
+            }
+        }
+    }
+
+    if (command === "setuploadfileeval") {
+        if (message.author.id != config.owner) return message.reply("Invalid Permissions - Command is owner only.")
+        else {
+            // if (args.join(' ') != "true" || args.join(' ') != "false") return message.reply("Please enter \"true\" for yes, and \"false\" for no.")
+            if (args.join(' ') === "true") {
+                config.uploadtoFileEval = true;
+                fs.writeFile('./config.json', JSON.stringify(config, null, 2), function (err) {
+                    if (err) return console.error(err);
+                    // console.log(JSON.stringify(config));
+                    // console.log('writing to ' + './config.json');
+                    message.channel.send(`uploadtoFileEval Successfully Changed to ${config.uploadtoFileEval}.`)
+                });
+            }
+            else if (args.join(' ') === "false") {
+                config.uploadtoFileEval = false;
+                fs.writeFile('./config.json', JSON.stringify(config, null, 2), function (err) {
+                    if (err) return console.error(err);
+                    // console.log(JSON.stringify(config));
+                    // console.log('writing to ' + './config.json');
+                    message.channel.send(`uploadtoFileEval Successfully Changed to ${config.uploadtoFileEval}.`)
+                });
+            }
+        }
+    }
+
+
+    if (command === "setgame") {
+        const config = require("./config.json");
+        var guild = message.guild;
+        if (message.author.id === config.owner) {
+            // client.user.setGame(args.join(' '));
+            client.user.setActivity(args.join(' '))
+
+        }
+        else {
+            message.channel.send("Insufficant Permissions!")
+        }
+        logger.log('info', `Setgame command used by ${message.author.tag} ID: ${message.author.id} Time: ${Date()} Guild: ${guild}`)
+    }
+
+    if (command === "setstatus") {
+        var guild = message.guild;
+        if (message.author.id === config.owner) {
+            client.user.setStatus(args.join(' '));
+        }
+        logger.log('info', `Setstatus command used by ${message.author.tag} ID: ${message.author.id} Time: ${Date()} Guild: ${guild}`)
+
+    }
+
+    if (command === "getallserver") {
+        if (message.author.id === config.owner) {
+            let user = message.author;
+            user.send(client.guilds.map(e => e.toString()).join(" "));
+        }
+        else {
+            return message.channel.send("Insufficant Permissions");
+        }
+        logger.log('Information', `Getallserver command used by ${message.author.tag} ID: ${message.author.id} Time: ${Date.now()} Guild: ${guild}`)
+    }
+
+    if (command === "broadcast") {
+        if (message.author.id === config.owner) {
+            // var check1 = base64url.encode(rand.toString())
+            // if (!args.join(' ')) {
+            //     message.channel.send('Please get a password! It has been Directly Messaged to you!')
+            //     message.author.send("Base 64 of " + rand)
+            //     message.author.send("Then remove any equal signs(=) from the result!")
+            // }
+            // else if (args.join(' ') === check1) {
+            function getDefaultChannel(guild) {
+                // if(guild.channel.has(guild.id))
+                // return guild.channels.get(guild.id)
+
+                if (guild.channels.exists("name", "general"))
+                    return guild.channels.find("name", "general");
+
+                // Now we get into the heavy stuff: first channel in order where the bot can speak
+                // hold on to your hats!
+                return guild.channels
+                    .filter(c => c.type === "text" &&
+                        c.permissionsFor(guild.client.user).has("SEND_MESSAGES"))
+                    .sort((a, b) => a.position - b.position ||
+                        Long.fromString(a.id).sub(Long.fromString(b.id)).toNumber())
+                    .first();
+            }
+            client.guilds.map(e => getDefaultChannel(e).send(args.join(' ')))
+            // let min = 5; // change min here (WIP)
+            // let server = client.guilds.find("name", args.join(' '));
+            // server.defaultChannel.send(`Hello, PowerBot will under go a system update in 5 minutes. Please prepare for at least 5-10 minutes of down time. Thank you for your understanding. Together we will make PowerBot better and better! ~AirFusion--Creator of PowerBot`)
+            // }
+        }
+        else {
+            return message.channel.send("Insufficant Permissions");
+        }
+        logger.log('Information', `Broadcast command used by ${message.author.tag} ID: ${message.author.id} Time: ${Date.now()} Guild: ${guild}`)
+
+    }
+
+    if (command === "leaveserver") {
+        if (message.author.id === config.owner) {
+            guild = client.guilds.find("name", args.join(' ')).leave();
+        }
+        else message.channel.send("Insufficant Permissions.")
+    }
+    if (command === "getlog") {
+        if (message.author.id === config.owner) {
+            let user = message.author;
+            user.send({ files: ['log.txt'] })
+        }
+        else {
+            message.reply("Insufficant Permissions")
+        }
+    }
+    if (command === "killall") {
+        message.author.send(`KILLALL COMMAND HAS BEEN ACTIVATED | ID: ${message.author.id} | Tag: ${message.author.tag} | Server: ${message.guild} `)
+        if (message.author.id === config.owner) {
+            var check = base64url.encode(rand.toString())
+            if (!args.join(' ')) {
+                message.channel.send('Please get a password! It has been Directly Messaged to you!')
+                message.author.send("Base 64 of " + rand)
+                message.author.send("Then remove any equal signs(=) from the result!")
+            }
+            else if (args.join(' ') === check) {
+                message.channel.send("Success! View host console for more information. PowerBot shutting down...")
+                console.log(chalk.green("PowerBot has been shutdown via Discord Chatbox."))
+                console.log(chalk.green("Here are some Information:"))
+                console.log(chalk.green(`Auth: ${message.author.username}#${message.author.discriminator} ID: ${message.author.id}`))
+                console.log(chalk.green(`Timestamp: ${Date()}`))
+                setTimeout(function () {
+                    process.abort();
+                }, 3000);
+            }
+            else {
+                console.log(check)
+                message.channel.send("Incorrect Password")
+            }
+        } else {
+            message.channel.send("Insufficant Permissions")
+        }
+        logger.log('Information', `Killall command used by ${message.author.tag} ID: ${message.author.id} Time: ${Date.now()} Guild: ${guild}`)
+
+    }
+
+    if (command === "eval") {
+        if (message.author.id === config.owner) {
+            var x = Date.now();
+            try {
+                var jvs = args.join(" ");
+                var done = eval(jvs);
+                if (typeof done !== "string")
+                    done = require("util").inspect(done);
+                message.channel.send(":white_check_mark: **Output:**\n" + "```" + `${clean(done)}` + "```");
+                localStorage.setItem('Eval-Results.json', clean(done));
+                if (config.uploadtoFileEval) {
+                    message.channel.send({ files: ['Eval-Results.json'] });
+                }
+                if (config.uploadtoPastebinEval) {
+                    pastebin.new({ title: 'Eval Results', content: clean(done) }, function (err, ret) {
+                        if (err)
+                            message.channel.send(err);
+                        else
+                            message.channel.send(ret);
+                    });
+                }
+                var y = Date.now();
+                var noplz = y - x
+                message.channel.send("Time used: " + noplz + " ms");
+            }
+            catch (e) {
+                message.channel.send(":x: **Output:**\n" + `\`ERROR\` \`\`\`x1\n${clean(e)}\n\`\`\``);
+                localStorage.setItem('Eval-Results.json', clean(e));
+                if (config.uploadtoFileEval) {
+                    message.channel.send({ files: ['Eval-Results.json'] });
+                }
+                if (config.uploadtoPastebinEval) {
+                    pastebin.new({ title: 'Eval Results', content: clean(e) }, function (err, ret) {
+                        if (err)
+                            message.channel.send(err);
+                        else
+                            message.channel.send(ret);
+                    });
+                }
+                var y = Date.now();
+                var noplz = y - x
+                message.channel.send("Time used: " + noplz + " ms");
+            }
+        }
+        else {
+            message.channel.send("Insufficant Permissions.")
+        }
+        logger.log('Information', `Eval command used by ${message.author.tag} ID: ${message.author.id} Time: ${Date.now()} Guild: ${guild}`)
+
+    }
+
+});  //message HANDLER ENDS HERE
+
+function clean(text) {
+    if (typeof (text) === "string")
+        return text.replace(/` /g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+    else
+        return text;
+
+}
+
+
+
+
+
+var token = /[\w\d]{24}\.[\w\d]{6}\.[\w\d-_]{27}/g;
+client.on("debug", error => {
+    console.log(chalk.cyan(error.replace(token, "HIDDEN")));
+});
+client.on("warn", error => {
+    console.log(chalk.yellow(error.replace(token, "HIDDEN")));
+});
+// client.on("err", error => {
+//     console.log(chalk.red(error.replace(token, "HIDDEN")));
+// }); //Broken
+client.addListener('error', function (e) {
+    var error = e.error;
+    console.log(chalk.red(error))
+    console.error(error)
+    console.log(error);
+})
+
+client.login(config.token);
+

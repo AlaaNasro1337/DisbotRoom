@@ -1,0 +1,16 @@
+{
+  "prefix" : "one letter prefix",
+  "token" : "Discord Bot Token (get it @ discord developers website)",
+  "owner" : "Owner ID From discord",
+  "yt" : "YT-Token | Get it via google dev console",
+  "pastebin" : "API Key @ pastebin.com, register to get it. (Link: https://pastebin.com/api)",
+  "wolfram" : "Wolfram API Key, get it here: https://products.wolframalpha.com/api/ (need sign up)",
+  "name": "Bot Name, including discrim",
+  "ownerTag" : "bot owner's discord username & discrim",
+  "invLink" : "bot's invite link",
+  "createMuteRoleUponJoin": true/false - "ask bot to create mute role when joining a new server",
+  "uploadtoPastebinEval": true/false - "upload eval results to pastebin",
+  "uploadtoFileEval": true/false - "upload eval results to chat",
+  "Gcx": "Google custom search key (get it via google dev console)",
+  "profanity": ["place additional profanity", "here (for -say command)"]
+}

@@ -1,0 +1,13 @@
+command use log (logs timestamp & user & what command was used)
+
+Mod log reminder to owners who don't gave modlog setup
+
+
+
+Links: 
+https://github.com/perhion/aru/blob/master/commands/ping.js
+https://github.com/perhion/aru
+https://github.com/CodeFromCirc/PowerPlug
+https://github.com/TheObsidian/crowfallBot-archived
+
+
